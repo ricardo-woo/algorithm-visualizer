@@ -1,3 +1,5 @@
+import { Button } from "./Button";
+
 export const Hero = () => {
   return (
     <div className="flex flex-col items-center gap-8 py-10 lg:flex-row">
@@ -5,7 +7,12 @@ export const Hero = () => {
         <h1 className="font-oxanium font-bold text-5xl ">
           ALGORITHMS FOR GAME DEVELOPERS
         </h1>
-        <p className="text-muted">Hello</p>
+        <p className="text-muted">
+          Explore how algorithms work through interactive visualizations. Watch
+          each step unfold in real time, experiment with different algorithms,
+          and build a deeper understanding of how they solve problems.
+        </p>
+        <Button bgcolor="bg-accent" display="Get Started" />
       </div>
       <div className="w-full lg:w-1/2">
         <img
