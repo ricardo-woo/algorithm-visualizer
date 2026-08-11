@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button } from "../components/Button";
 import type { ReactNode } from "react";
 
 interface NavItemProps {
@@ -11,7 +12,7 @@ const NavItem = ({ children, href }: NavItemProps) => {
     <li>
       <a
         href={href}
-        className="text-text-muted transition-colors hover:text-primary"
+        className="text-muted transition-all hover:text-foreground hover:text-xl hover:font-semibold delay-50 duration-200 ease-in-out"
       >
         {children}
       </a>
@@ -20,20 +21,19 @@ const NavItem = ({ children, href }: NavItemProps) => {
 };
 
 const NAV_ITEMS: NavItemProps[] = [
-  { href: "/", children: "Home" },
   { href: "/algorithms", children: "Algorithms" },
   { href: "/playground", children: "Playground" },
   { href: "/docs", children: "Docs" },
 ];
 
-export const NavBar = () => {
+export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b bg-background backdrop-blur-xs">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
-        <a href="/" className="text-xl font-bold text-foreground">
-          AlgoView
+    <nav className="sticky top-0 z-50 bg-background backdrop-blur-xs">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-22">
+        <a href="/" className="text-xl font-tech font-bold text-foreground">
+          ALGOVIEW
         </a>
 
         <ul className="hidden items-center gap-6 md:flex">
@@ -43,12 +43,11 @@ export const NavBar = () => {
             </NavItem>
           ))}
         </ul>
-        <a
-          href="/algorithms"
-          className="hidden rounded-md bg-accent px-4 py-2 text-sm font-semibold text-foreground transition-opacity hover:opacity-90 md:inline-flex"
-        >
-          Launch visualizer
-        </a>
+        <div className="hidden sm:block">
+          <a href="/algorithms">
+            <Button bgcolor="bg-accent" display="Launch Visualizer"></Button>
+          </a>
+        </div>
 
         <button
           type="button"
@@ -63,10 +62,7 @@ export const NavBar = () => {
       </div>
 
       {open && (
-        <ul
-          id="mobile-nav"
-          className="flex flex-col gap-1 border-t px-6 py-4 md:hidden"
-        >
+        <ul id="mobile-nav" className="flex flex-col gap-1 px-6 py-4 sm:hidden">
           {NAV_ITEMS.map((item) => (
             <NavItem key={item.href} href={item.href}>
               {item.children}
