@@ -1,9 +1,14 @@
 @import "tailwindcss";
 
 @theme {
+  --font-tech: "Share Tech Mono", monospace;
+  --font-tech-weight: 400;
+  --font-tech-style: normal;
+
   --color-primary: #065789;
   --color-secondary: #4398c7;
   --color-accent: #eac10b;
+  --color-accent-secondary: #dca30a;
 
   --color-background: #f8fafc;
   --color-foreground: #111827;
