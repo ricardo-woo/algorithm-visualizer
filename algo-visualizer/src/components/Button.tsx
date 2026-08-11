@@ -1,27 +1,28 @@
 interface ButtonProps {
-  display: React.ReactNode;
+  display?: React.ReactNode;
   onClick?: () => void;
+  bgcolor?: string;
 }
 
-export const Button = ({ display, onClick }: ButtonProps) => {
+export const Button = ({ display, onClick, bgcolor }: ButtonProps) => {
   return (
     <button
       onClick={onClick}
-      className="
-        m-4
-        rounded-lg
-        bg-secondary
-        px-5 py-2.5
-        font-medium
-        text-white
-        shadow-sm
-        transition
-        delay-100
+      className={`
+        cursor-pointer
+        rounded-md
+        ${bgcolor}
+        px-4
+        py-2
+        text-lg
+        font-semibold
+        text-foreground
+        transition-all
+        hover:brightness-90
+        delay-50
         duration-200
         ease-in-out
-        hover:bg-primary
-        hover:scale-110
-      "
+      `}
     >
       {display}
     </button>
