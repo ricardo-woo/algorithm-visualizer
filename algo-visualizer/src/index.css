@@ -5,6 +5,11 @@
   --font-tech-weight: 400;
   --font-tech-style: normal;
 
+  --font-oxanium: "Oxanium", sans-serif;
+  --font-oxanium-optical-sizing: auto;
+  --font-oxanium-weight: <weight>;
+  --font-oxanium-style: normal;
+
   --color-primary: #065789;
   --color-secondary: #4398c7;
   --color-accent: #eac10b;

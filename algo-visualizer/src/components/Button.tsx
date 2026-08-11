@@ -18,6 +18,7 @@ export const Button = ({ display, onClick, bgcolor }: ButtonProps) => {
         font-semibold
         text-foreground
         transition-all
+        hover:saturate-150
         hover:brightness-90
         delay-50
         duration-200

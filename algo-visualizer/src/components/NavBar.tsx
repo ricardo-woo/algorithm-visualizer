@@ -31,7 +31,7 @@ export const Navbar = () => {
 
   return (
     <nav className="sticky top-0 z-50 bg-background backdrop-blur-xs">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-22">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
         <a href="/" className="text-xl font-tech font-bold text-foreground">
           ALGOVIEW
         </a>
