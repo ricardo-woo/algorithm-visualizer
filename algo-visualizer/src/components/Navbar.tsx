@@ -22,7 +22,7 @@ const NavItem = ({ children, href }: NavItemProps) => {
 
 const NAV_ITEMS: NavItemProps[] = [
   { href: "/algorithms", children: "Algorithms" },
-  { href: "/playground", children: "Playground" },
+  { href: "/algorithm-visualizer/playground", children: "Playground" },
   { href: "/docs", children: "Docs" },
 ];
 
