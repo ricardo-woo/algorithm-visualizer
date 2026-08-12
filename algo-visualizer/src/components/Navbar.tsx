@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Button } from "../components/Button";
+import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 
 interface NavItemProps {
@@ -10,19 +11,19 @@ interface NavItemProps {
 const NavItem = ({ children, href }: NavItemProps) => {
   return (
     <li>
-      <a
-        href={href}
+      <Link
+        to={href}
         className="text-muted dark:text-dark-muted transition-all hover:text-foreground dark:hover:text-dark-foreground hover:text-xl hover:font-semibold delay-25 duration-150 ease-in-out"
       >
         {children}
-      </a>
+      </Link>
     </li>
   );
 };
 
 const NAV_ITEMS: NavItemProps[] = [
   { href: "/algorithms", children: "Algorithms" },
-  { href: "/algorithm-visualizer/playground", children: "Playground" },
+  { href: "/playground", children: "Playground" },
   { href: "/docs", children: "Docs" },
 ];
 
@@ -32,12 +33,12 @@ export const Navbar = () => {
   return (
     <nav className="sticky top-0 z-50 bg-background dark:bg-dark-background backdrop-blur-none">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
-        <a
-          href="/"
+        <Link
+          to="/"
           className="text-xl font-tech font-bold text-foreground dark:text-dark-foreground"
         >
           ALGOVIEW.
-        </a>
+        </Link>
 
         <ul className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => (

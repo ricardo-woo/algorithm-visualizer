@@ -1,17 +1,19 @@
 import "./App.css";
 import { Home } from "./pages/Home";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Playground from "./pages/Playground";
 
 function App() {
   return (
     <>
-      <div className="bg-background dark:bg-dark-background">
-        <HashRouter>
+      <BrowserRouter basename="/algorithm-visualizer">
+        <div className="bg-background dark:bg-dark-background">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/playground" element={<Playground />} />
           </Routes>
-        </HashRouter>
-      </div>
+        </div>
+      </BrowserRouter>
     </>
   );
 }
