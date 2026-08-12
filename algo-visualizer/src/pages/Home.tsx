@@ -1,4 +1,4 @@
-import Card from "../components/Card";
+import Card from "../components/CardGrid";
 import Hero from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 
