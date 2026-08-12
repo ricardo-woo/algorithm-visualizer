@@ -86,7 +86,7 @@ export const FeaturedViewport = () => {
   const demo = demos[demoIndex];
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-[#0a1120] dark:bg-[#F5EEDF] p-4 shadow-[0_24px_60px_-24px_rgba(6,87,137,0.4)]">
+    <div className="rounded-2xl border border-white/5 bg-[#0a1120] dark:bg-[#F5EEDF] p-4">
       <div className="mb-3 flex items-center gap-2 px-1">
         <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#6F5E46]">
           {demo.label}
@@ -105,10 +105,10 @@ export const FeaturedViewport = () => {
       <div className="mt-3.5 flex justify-between px-1 font-tech">
         {demo.hudLabels.map((label, i) => (
           <div key={label} className="flex flex-col gap-0.5">
-            <span className="text-[0.6rem] uppercase tracking-wider text-[#6F5E46]">
+            <span className="text-[0.8rem] uppercase tracking-wider text-[#6F5E46]">
               {label}
             </span>
-            <strong className="text-[0.85rem] font-semibold text-[#1D170F]">
+            <strong className="text-[0.9rem] font-semibold text-[#1D170F]">
               {hud[i]}
             </strong>
           </div>

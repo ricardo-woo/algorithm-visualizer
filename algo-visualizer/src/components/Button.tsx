@@ -3,6 +3,7 @@ interface ButtonProps {
   onClick?: () => void;
   bgcolor?: string;
   txtcolor?: string;
+  width?: React.ReactNode;
 }
 
 export const Button = ({
@@ -10,6 +11,7 @@ export const Button = ({
   onClick,
   bgcolor,
   txtcolor,
+  width,
 }: ButtonProps) => {
   return (
     <button
@@ -19,6 +21,7 @@ export const Button = ({
         rounded-md
         ${bgcolor}
         ${txtcolor}
+        ${width}
         px-4
         py-2
         text-lg

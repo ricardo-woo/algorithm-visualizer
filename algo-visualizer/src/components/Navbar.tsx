@@ -30,7 +30,7 @@ export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-background dark:bg-dark-background backdrop-blur-xs">
+    <nav className="sticky top-0 z-50 bg-background dark:bg-dark-background backdrop-blur-none">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
         <a
           href="/"
