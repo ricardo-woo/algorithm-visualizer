@@ -33,7 +33,7 @@ export const Navbar = () => {
     <nav className="sticky top-0 z-50 bg-background backdrop-blur-xs">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
         <a href="/" className="text-xl font-tech font-bold text-foreground">
-          ALGOVIEW
+          ALGOVIEW.
         </a>
 
         <ul className="hidden items-center gap-6 md:flex">
@@ -43,7 +43,7 @@ export const Navbar = () => {
             </NavItem>
           ))}
         </ul>
-        <div className="hidden sm:block">
+        <div className="hidden md:block">
           <a href="/algorithms">
             <Button bgcolor="bg-accent" display="Launch Visualizer"></Button>
           </a>
@@ -68,6 +68,9 @@ export const Navbar = () => {
               {item.children}
             </NavItem>
           ))}
+          <a href="/algorithms">
+            <Button bgcolor="bg-accent" display="Launch Visualizer"></Button>
+          </a>
         </ul>
       )}
     </nav>

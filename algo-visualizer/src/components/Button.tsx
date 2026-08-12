@@ -2,9 +2,15 @@ interface ButtonProps {
   display?: React.ReactNode;
   onClick?: () => void;
   bgcolor?: string;
+  txtcolor?: string;
 }
 
-export const Button = ({ display, onClick, bgcolor }: ButtonProps) => {
+export const Button = ({
+  display,
+  onClick,
+  bgcolor,
+  txtcolor,
+}: ButtonProps) => {
   return (
     <button
       onClick={onClick}
@@ -12,11 +18,11 @@ export const Button = ({ display, onClick, bgcolor }: ButtonProps) => {
         cursor-pointer
         rounded-md
         ${bgcolor}
+        ${txtcolor}
         px-4
         py-2
         text-lg
         font-semibold
-        text-foreground
         transition-all
         hover:saturate-150
         hover:brightness-90
