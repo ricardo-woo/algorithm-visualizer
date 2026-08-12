@@ -1,3 +1,4 @@
+import Card from "../components/Card";
 import Hero from "../components/Hero";
 import { Navbar } from "../components/Navbar";
 
@@ -7,6 +8,7 @@ export function Home() {
       <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-6">
         <Navbar />
         <Hero />
+        <Card />
       </div>
     </>
   );
