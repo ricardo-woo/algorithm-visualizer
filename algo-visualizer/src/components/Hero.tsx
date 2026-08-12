@@ -8,7 +8,7 @@ export const Hero = () => {
         <h1 className="font-oxanium font-bold text-5xl ">
           ALGORITHMS FOR GAME DEVELOPERS
         </h1>
-        <p className="text-muted mt-4 mb-8">
+        <p className="font-oxanium text-muted mt-4 mb-8 pr-15 text-justify">
           Explore how algorithms work through interactive visualizations. Watch
           each step, experiment with different algorithms, and build a deeper
           understanding of how they solve problems.
