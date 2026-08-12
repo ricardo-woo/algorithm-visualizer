@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+html,
+body,
+#root {
+  overscroll-behavior: none;
+}
+
 @theme {
   --font-tech: "Share Tech Mono", monospace;
   --font-tech-weight: 400;
