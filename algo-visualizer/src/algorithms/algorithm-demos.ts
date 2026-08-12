@@ -13,7 +13,7 @@ export interface DemoInstance {
 export interface Demo {
   key: string;
   label: string;
-  hudLabels: [string, string, string];
+  hudLabels: [string?, string?, string?];
   create: (
     context: DemoContext,
     setHud: (values: [string, string, string]) => void,
@@ -372,7 +372,7 @@ export const demos: Demo[] = [
   {
     key: "boids",
     label: "Boids Flocking",
-    hudLabels: ["Status", "Agents", "Avg Speed"],
+    hudLabels: ["Status", "Agents"],
     create: createBoidsDemo,
   },
 ];

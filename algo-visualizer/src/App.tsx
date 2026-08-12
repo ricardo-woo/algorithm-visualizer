@@ -5,7 +5,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
-      <div className="bg-background">
+      <div className="bg-background dark:bg-dark-background">
         <HashRouter>
           <Routes>
             <Route path="/" element={<Home />} />

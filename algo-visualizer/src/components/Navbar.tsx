@@ -12,7 +12,7 @@ const NavItem = ({ children, href }: NavItemProps) => {
     <li>
       <a
         href={href}
-        className="text-muted transition-all hover:text-foreground hover:text-xl hover:font-semibold delay-50 duration-200 ease-in-out"
+        className="text-muted dark:text-dark-muted transition-all hover:text-foreground dark:hover:text-dark-foreground hover:text-xl hover:font-semibold delay-25 duration-150 ease-in-out"
       >
         {children}
       </a>
@@ -30,9 +30,12 @@ export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 bg-background backdrop-blur-xs">
+    <nav className="sticky top-0 z-50 bg-background dark:bg-dark-background backdrop-blur-xs">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
-        <a href="/" className="text-xl font-tech font-bold text-foreground">
+        <a
+          href="/"
+          className="text-xl font-tech font-bold text-foreground dark:text-dark-foreground"
+        >
           ALGOVIEW.
         </a>
 
@@ -54,7 +57,7 @@ export const Navbar = () => {
           onClick={() => setOpen((prev) => !prev)}
           aria-expanded={open}
           aria-controls="mobile-nav"
-          className="inline-flex items-center justify-center rounded-md p-2 text-foreground md:hidden"
+          className="inline-flex items-center justify-center rounded-md p-2 text-foreground dark:text-dark-foreground md:hidden"
         >
           <span className="sr-only">Toggle menu</span>
           {open ? <CloseIcon /> : <MenuIcon />}
@@ -62,7 +65,7 @@ export const Navbar = () => {
       </div>
 
       {open && (
-        <ul id="mobile-nav" className="flex flex-col gap-1 px-6 py-4 sm:hidden">
+        <ul id="mobile-nav" className="flex flex-col gap-4 px-6 py-4 sm:hidden">
           {NAV_ITEMS.map((item) => (
             <NavItem key={item.href} href={item.href}>
               {item.children}

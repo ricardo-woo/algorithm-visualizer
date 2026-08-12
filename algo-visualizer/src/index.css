@@ -16,8 +16,11 @@
   --color-accent-secondary: #dca30a;
 
   --color-background: #f8fafc;
+  --color-dark-background: #070503;
   --color-foreground: #111827;
+  --color-dark-foreground: #eee7d8;
   --color-muted: #64748b;
+  --color-dark-muted: #e3ded6;
 
   --viewport-bg: #0a1120;
   --viewport-wall: #1e293b;

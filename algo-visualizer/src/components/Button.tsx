@@ -24,9 +24,8 @@ export const Button = ({
         text-lg
         font-semibold
         transition-all
-        hover:saturate-150
-        hover:brightness-90
-        delay-50
+        hover:saturate-300
+        delay-25
         duration-200
         ease-in-out
       `}

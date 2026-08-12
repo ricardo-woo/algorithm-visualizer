@@ -86,30 +86,29 @@ export const FeaturedViewport = () => {
   const demo = demos[demoIndex];
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-[#0a1120] p-4 shadow-[0_24px_60px_-24px_rgba(6,87,137,0.4)]">
+    <div className="rounded-2xl border border-white/5 bg-[#0a1120] dark:bg-[#F5EEDF] p-4 shadow-[0_24px_60px_-24px_rgba(6,87,137,0.4)]">
       <div className="mb-3 flex items-center gap-2 px-1">
-        <span className="h-2 w-2 rounded-full bg-accent shadow-[0_0_8px_#eac10b] motion-safe:animate-pulse" />
-        <span className="font-mono text-[0.68rem] uppercase tracking-wider text-slate-400">
+        <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#6F5E46]">
           {demo.label}
         </span>
       </div>
 
       <div
         ref={containerRef}
-        className={`aspect-video overflow-hidden rounded-lg bg-white/[0.03] transition-opacity duration-300 ${
+        className={`aspect-video overflow-hidden rounded-lg bg-white/[0.03] dark:bg-black/[0.1] transition-opacity duration-300 ${
           fading ? "opacity-0" : "opacity-100"
         }`}
       >
         <canvas ref={canvasRef} />
       </div>
 
-      <div className="mt-3.5 flex justify-between px-1 font-mono">
+      <div className="mt-3.5 flex justify-between px-1 font-tech">
         {demo.hudLabels.map((label, i) => (
           <div key={label} className="flex flex-col gap-0.5">
-            <span className="text-[0.6rem] uppercase tracking-wider text-slate-500">
+            <span className="text-[0.6rem] uppercase tracking-wider text-[#6F5E46]">
               {label}
             </span>
-            <strong className="text-[0.85rem] font-semibold text-slate-200">
+            <strong className="text-[0.85rem] font-semibold text-[#1D170F]">
               {hud[i]}
             </strong>
           </div>
