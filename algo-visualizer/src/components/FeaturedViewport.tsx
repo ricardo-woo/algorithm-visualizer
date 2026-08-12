@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { demos } from "../algorithms/algorithm-demos";
 
-const SHOW_DURATION_MS = 15000;
+const SHOW_DURATION_MS = 30000;
 const FADE_MS = 320;
 const PATHFINDING_INDEX = demos.findIndex((d) => d.key === "astar");
 
