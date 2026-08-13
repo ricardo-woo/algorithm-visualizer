@@ -11,6 +11,8 @@ const VisualizationViewport = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
+  const algorithm = algorithms[1];
+
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
 
@@ -60,7 +62,7 @@ const VisualizationViewport = () => {
           .matches,
       },
       {
-        algorithm: algorithms[0],
+        algorithm,
         cellSize: 32,
       },
     );
@@ -92,7 +94,7 @@ const VisualizationViewport = () => {
       <div className="rounded-2xl sm:col-span-3 w-full border border-white/5 bg-[#0a1120] p-4">
         <div className="mb-3 flex justify-between items-center gap-2 px-1">
           <span className="font-tech select-none text-[0.68rem] uppercase tracking-wider text-[#90A1B9]">
-            LIVE VIEW
+            <span className="text-accent">{algorithm.label}</span> LIVE VIEW
           </span>
           {reducedMotion && (
             <p className="font-tech text-xs text-accent">

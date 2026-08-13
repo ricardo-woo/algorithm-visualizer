@@ -1,5 +1,6 @@
 import type { Grid, Node, SearchResult, PhaseType } from "../types";
 import { runBFS } from "./BFS";
+import { runDijkstra } from "./Dijkstra";
 
 const palette = {
   primary: "#065789",
@@ -315,5 +316,10 @@ export const algorithms: PathfindingAlgorithm[] = [
     key: "bfs",
     label: "Breadth-First Search",
     run: runBFS,
+  },
+  {
+    key: "dijkstra",
+    label: "Dijkstra",
+    run: runDijkstra,
   },
 ];
