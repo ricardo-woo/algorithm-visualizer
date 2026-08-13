@@ -1,19 +1,21 @@
 import { useState } from "react";
-import { Button } from "../components/Button";
 import { Link } from "react-router-dom";
 import type { ReactNode } from "react";
 
 interface NavItemProps {
   children: ReactNode;
   href: string;
+  target?: string | "_self";
 }
 
-const NavItem = ({ children, href }: NavItemProps) => {
+const NavItem = ({ children, href, target }: NavItemProps) => {
   return (
     <li>
       <Link
         to={href}
-        className="text-muted dark:text-dark-muted transition-all hover:text-foreground dark:hover:text-dark-foreground hover:text-xl hover:font-semibold delay-25 duration-150 ease-in-out"
+        target={target}
+        rel="noopener noreferrer"
+        className="text-muted dark:text-dark-muted transition-all hover:text-foreground dark:hover:text-accent hover:text-xl hover:font-semibold delay-25 duration-200 ease-in-out"
       >
         {children}
       </Link>
@@ -22,9 +24,13 @@ const NavItem = ({ children, href }: NavItemProps) => {
 };
 
 const NAV_ITEMS: NavItemProps[] = [
-  { href: "/algorithms", children: "Algorithms" },
   { href: "/playground", children: "Playground" },
   { href: "/docs", children: "Docs" },
+  {
+    href: "https://github.com/ricardo-woo/algorithm-visualizer",
+    children: "GitHub",
+    target: "_blank",
+  },
 ];
 
 export const Navbar = () => {
@@ -37,21 +43,16 @@ export const Navbar = () => {
           to="/"
           className="text-xl font-tech font-bold text-foreground dark:text-dark-foreground"
         >
-          ALGOVIEW.
+          ALGOVIEW<span className="text-accent">.</span>
         </Link>
 
         <ul className="hidden items-center gap-6 md:flex">
           {NAV_ITEMS.map((item) => (
-            <NavItem key={item.href} href={item.href}>
+            <NavItem key={item.href} target={item.target} href={item.href}>
               {item.children}
             </NavItem>
           ))}
         </ul>
-        <div className="hidden md:block">
-          <a href="/algorithms">
-            <Button bgcolor="bg-accent" display="Launch Visualizer"></Button>
-          </a>
-        </div>
 
         <button
           type="button"
@@ -68,13 +69,10 @@ export const Navbar = () => {
       {open && (
         <ul id="mobile-nav" className="flex flex-col gap-4 px-6 py-4 sm:hidden">
           {NAV_ITEMS.map((item) => (
-            <NavItem key={item.href} href={item.href}>
+            <NavItem key={item.href} target={item.target} href={item.href}>
               {item.children}
             </NavItem>
           ))}
-          <a href="/algorithms">
-            <Button bgcolor="bg-accent" display="Launch Visualizer"></Button>
-          </a>
         </ul>
       )}
     </nav>

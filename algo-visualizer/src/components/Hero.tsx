@@ -16,11 +16,13 @@ export const Hero = () => {
           </p>
           <div className="flex gap-4">
             <Button bgcolor="bg-accent" display="Find Algorithms" />
-            <Button
-              bgcolor="bg-secondary"
-              txtcolor="text-white"
-              display="Try it out →"
-            />
+            <a href="/algorithm-visualizer/playground">
+              <Button
+                bgcolor="bg-secondary"
+                txtcolor="text-white"
+                display="Try it out →"
+              />
+            </a>
           </div>
         </div>
         <div className="w-full lg:w-1/2">

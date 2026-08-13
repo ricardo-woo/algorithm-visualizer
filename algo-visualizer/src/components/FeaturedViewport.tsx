@@ -86,16 +86,16 @@ export const FeaturedViewport = () => {
   const demo = demos[demoIndex];
 
   return (
-    <div className="rounded-2xl border border-white/5 bg-[#0a1120] dark:bg-[#F5EEDF] p-4">
+    <div className="rounded-2xl border border-white/5 bg-[#0a1120] p-4">
       <div className="mb-3 flex items-center gap-2 px-1">
-        <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#90A1B9] dark:text-[#6F5E46]">
+        <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#90A1B9]">
           {demo.label}
         </span>
       </div>
 
       <div
         ref={containerRef}
-        className={`aspect-video overflow-hidden rounded-lg bg-white/[0.03] dark:bg-black/[0.1] transition-opacity duration-300 ${
+        className={`aspect-video overflow-hidden rounded-lg bg-white/[0.03] transition-opacity duration-300 ${
           fading ? "opacity-0" : "opacity-100"
         }`}
       >
@@ -105,10 +105,10 @@ export const FeaturedViewport = () => {
       <div className="mt-3.5 flex justify-between px-1 font-tech">
         {demo.hudLabels.map((label, i) => (
           <div key={label} className="flex flex-col gap-0.5">
-            <span className="text-[0.8rem] uppercase tracking-wider text-[#90A1B9] dark:text-[#6F5E46]">
+            <span className="text-[0.8rem] uppercase tracking-wider text-[#90A1B9]">
               {label}
             </span>
-            <strong className="text-[0.9rem] font-semibold text-[#E2E8F0] dark:text-[#1D170F]">
+            <strong className="text-[0.9rem] font-semibold text-[#E2E8F0]">
               {hud[i]}
             </strong>
           </div>
