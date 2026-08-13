@@ -1,7 +1,19 @@
 import ViewportController from "./ViewportController";
 import { useRef, useEffect } from "react";
+import type {
+  PathfindingVisualizerContext,
+  PathfindingVisualizerInstance,
+} from "../algorithms/pathfinding/PathfindingVisualizer";
 
-const VisualizationViewport = () => {
+interface VisualizationViewportProps {
+  createVisualizer: (
+    context: PathfindingVisualizerContext,
+  ) => PathfindingVisualizerInstance;
+}
+
+const VisualizationViewport = ({
+  createVisualizer,
+}: VisualizationViewportProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -15,12 +27,12 @@ const VisualizationViewport = () => {
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
 
-    let width = 0,
-      height = 0;
+    let animationFrame = 0;
+
     function resizeCanvas() {
       const rect = container!.getBoundingClientRect();
-      width = rect.width;
-      height = rect.height;
+      const width = rect.width;
+      const height = rect.height;
 
       canvas!.width = width;
       canvas!.height = height;
@@ -28,11 +40,33 @@ const VisualizationViewport = () => {
       canvas!.style.height = `${height}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
+
+    const visualizer = createVisualizer({
+      ctx,
+      width: container.clientWidth,
+      height: container.clientHeight,
+      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+        .matches,
+    });
+
+    const frame = (time: number) => {
+      visualizer.frame(time);
+      animationFrame = requestAnimationFrame(frame);
+    };
+
+    animationFrame = requestAnimationFrame(frame);
+
     resizeCanvas();
 
     const observer = new ResizeObserver(resizeCanvas);
     observer.observe(container);
-  }, []);
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+      observer.disconnect();
+      visualizer.destroy?.();
+    };
+  }, [createVisualizer]);
 
   return (
     <div className="rounded-2xl sm:col-span-3 w-full border border-white/5 bg-[#0a1120] p-4">
