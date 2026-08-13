@@ -25,7 +25,6 @@ export interface PathfindingVisualizerInstance {
   stepForward: () => void;
   stepBackward: () => void;
   reset: () => void;
-  isPlaying: () => boolean;
   destroy?: () => void;
 }
 
@@ -56,7 +55,7 @@ export function createPathfindingVisualizer(
   const cellH = height / rows;
 
   const grid: Grid = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => (Math.random() < 0.1 ? 1 : 0)),
+    Array.from({ length: cols }, () => (Math.random() < 0.2 ? 1 : 0)),
   );
 
   const start: Node = {
@@ -90,10 +89,6 @@ export function createPathfindingVisualizer(
   let visitedCount = 0;
 
   let isPlaying = false;
-
-  function getIsPlaying() {
-    return isPlaying;
-  }
 
   function play() {
     isPlaying = true;
@@ -251,12 +246,14 @@ export function createPathfindingVisualizer(
       }
 
       phase = "pause";
+      timelineIndex = totalSteps;
     }
   }
 
   function tick() {
     if (timelineIndex >= totalSteps) {
       phase = "pause";
+      isPlaying = false;
       return;
     }
     timelineIndex++;
@@ -270,16 +267,18 @@ export function createPathfindingVisualizer(
       phaseStart = time;
     }
 
-    if (reducedMotion) {
-      if (time - phaseStart > 4000) {
-        reset();
-      }
-
+    if (!isPlaying) {
       draw();
       return;
     }
 
-    if (!isPlaying) {
+    if (reducedMotion) {
+      // An explicit Play press still works under reduced motion — it
+      // just reveals the rest of the run immediately instead of
+      // animating node by node.
+      while (isPlaying) {
+        tick();
+      }
       draw();
       return;
     }
@@ -296,10 +295,6 @@ export function createPathfindingVisualizer(
 
         tick();
       }
-    } else if (phase === "pause") {
-      if (time - phaseStart > 2600) {
-        reset();
-      }
     }
 
     draw();
@@ -311,7 +306,6 @@ export function createPathfindingVisualizer(
     pause,
     stepForward,
     stepBackward,
-    isPlaying: getIsPlaying,
     reset,
   };
 }
