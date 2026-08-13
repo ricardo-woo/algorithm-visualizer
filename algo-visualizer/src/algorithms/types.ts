@@ -5,6 +5,8 @@ export interface Node {
 
 export type StepType = "visit" | "frontier";
 
+export type PhaseType = "search" | "path" | "pause";
+
 export interface SearchStep {
   type: StepType;
   node: Node;
