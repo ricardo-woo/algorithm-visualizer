@@ -86,7 +86,6 @@ export function runBFS(grid: Grid, start: Node, end: Node): SearchResult {
     }
   }
 
-  // Reconstruct path
   const path: Node[] = [];
 
   const endKey = key(end);
