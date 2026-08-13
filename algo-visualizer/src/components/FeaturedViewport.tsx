@@ -95,7 +95,7 @@ export const FeaturedViewport = () => {
 
       <div
         ref={containerRef}
-        className={`aspect-video overflow-hidden rounded-lg bg-white/[0.03] transition-opacity duration-300 ${
+        className={`aspect-video overflow-hidden rounded-lg bg-white/3 transition-opacity duration-300 ${
           fading ? "opacity-0" : "opacity-100"
         }`}
       >

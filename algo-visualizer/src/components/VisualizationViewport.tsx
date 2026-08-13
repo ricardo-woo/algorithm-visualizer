@@ -9,7 +9,7 @@ const VisualizationViewport = () => {
         </span>
         <ViewportController />
       </div>
-      <div className="rounded-2xl aspect-video overflow-hidden bg-white/[0.03] transition-opacity duration-300"></div>
+      <div className="rounded-2xl aspect-video overflow-hidden bg-white/3 transition-opacity duration-300"></div>
     </div>
   );
 };
