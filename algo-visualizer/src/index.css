@@ -6,6 +6,20 @@ body,
   overscroll-behavior: none;
 }
 
+@utility scrollbar-hidden {
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 @theme {
   --font-tech: "Share Tech Mono", monospace;
   --font-tech-weight: 400;
@@ -22,7 +36,7 @@ body,
   --color-accent-secondary: #dca30a;
 
   --color-background: #f8fafc;
-  --color-dark-background: #070503;
+  --color-dark-background: #080d18;
   --color-foreground: #111827;
   --color-dark-foreground: #eee7d8;
   --color-muted: #64748b;
