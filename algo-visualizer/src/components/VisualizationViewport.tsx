@@ -9,6 +9,23 @@ const VisualizationViewport = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const visualizerRef = useRef<PathfindingVisualizerInstance>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    setReducedMotion(mediaQuery.matches);
+
+    const handleChange = () => {
+      setReducedMotion(mediaQuery.matches);
+    };
+
+    mediaQuery.addEventListener("change", handleChange);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleChange);
+    };
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -71,36 +88,48 @@ const VisualizationViewport = () => {
   }, []);
 
   return (
-    <div className="rounded-2xl sm:col-span-3 w-full border border-white/5 bg-[#0a1120] p-4">
-      <div className="mb-3 flex justify-between items-center gap-2 px-1">
-        <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#90A1B9]">
-          LIVE VIEW
-        </span>
-        <ViewportController
-          isPlaying={isPlaying}
-          onPlay={() => {
-            visualizerRef.current?.play();
-            setIsPlaying(true);
-          }}
-          onPause={() => {
-            visualizerRef.current?.pause();
-            setIsPlaying(false);
-          }}
-          onNext={() => {
-            visualizerRef.current?.stepForward();
-          }}
-          onBack={() => {
-            visualizerRef.current?.stepBackward();
-          }}
-        />
+    <>
+      <div className="rounded-2xl sm:col-span-3 w-full border border-white/5 bg-[#0a1120] p-4">
+        <div className="mb-3 flex justify-between items-center gap-2 px-1">
+          <span className="font-tech select-none text-[0.68rem] uppercase tracking-wider text-[#90A1B9]">
+            LIVE VIEW
+          </span>
+          {reducedMotion && (
+            <p className="font-tech text-xs text-accent">
+              Reduced motion is enabled. Disable it in your accessibility
+              settings and refresh to see the full animation.
+            </p>
+          )}
+
+          <ViewportController
+            isPlaying={isPlaying}
+            onPlay={() => {
+              visualizerRef.current?.play();
+              setIsPlaying(true);
+            }}
+            onPause={() => {
+              visualizerRef.current?.pause();
+              setIsPlaying(false);
+            }}
+            onNext={() => {
+              visualizerRef.current?.stepForward();
+              setIsPlaying(false);
+            }}
+            onBack={() => {
+              visualizerRef.current?.stepBackward();
+              setIsPlaying(false);
+            }}
+          />
+        </div>
+
+        <div
+          ref={containerRef}
+          className="rounded-2xl aspect-video overflow-hidden bg-white/3 transition-opacity duration-300"
+        >
+          <canvas ref={canvasRef}></canvas>
+        </div>
       </div>
-      <div
-        ref={containerRef}
-        className="rounded-2xl aspect-video overflow-hidden bg-white/3 transition-opacity duration-300"
-      >
-        <canvas ref={canvasRef}></canvas>
-      </div>
-    </div>
+    </>
   );
 };
 

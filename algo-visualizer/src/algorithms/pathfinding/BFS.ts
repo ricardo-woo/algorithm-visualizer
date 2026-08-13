@@ -7,53 +7,108 @@ export function runBFS(grid: Grid, start: Node, end: Node): SearchResult {
   const key = (node: Node) => node.y * cols + node.x;
 
   const neighborsOf = (node: Node): Node[] => {
-    const out: Node[] = [];
-    if (node.x > 0) out.push({ x: node.x - 1, y: node.y });
-    if (node.x < cols - 1) out.push({ x: node.x + 1, y: node.y });
-    if (node.y > 0) out.push({ x: node.x, y: node.y - 1 });
-    if (node.y < rows - 1) out.push({ x: node.x, y: node.y + 1 });
-    return out;
+    const neighbors: Node[] = [];
+
+    if (node.x > 0) {
+      neighbors.push({
+        x: node.x - 1,
+        y: node.y,
+      });
+    }
+
+    if (node.x < cols - 1) {
+      neighbors.push({
+        x: node.x + 1,
+        y: node.y,
+      });
+    }
+
+    if (node.y > 0) {
+      neighbors.push({
+        x: node.x,
+        y: node.y - 1,
+      });
+    }
+
+    if (node.y < rows - 1) {
+      neighbors.push({
+        x: node.x,
+        y: node.y + 1,
+      });
+    }
+
+    return neighbors;
   };
 
   const queue: Node[] = [start];
-  const cameFrom: Record<number, Node> = {};
-  const visited: Record<number, boolean> = { [key(start)]: true };
+  let queueHead = 0;
+
+  const visited = new Set<number>();
+  const cameFrom = new Map<number, Node>();
+
+  visited.add(key(start));
 
   const steps: SearchResult["steps"] = [];
 
-  while (queue.length) {
-    const current = queue.shift()!;
-    steps.push({ type: "visit", node: current });
+  while (queueHead < queue.length) {
+    const current = queue[queueHead++];
 
-    if (current.x === end.x && current.y === end.y) break;
+    steps.push({
+      type: "visit",
+      node: current,
+    });
+
+    if (current.x === end.x && current.y === end.y) {
+      break;
+    }
 
     for (const neighbor of neighborsOf(current)) {
-      if (grid[neighbor.y][neighbor.x]) continue; // wall
+      if (grid[neighbor.y][neighbor.x] === 1) {
+        continue;
+      }
 
-      const k = key(neighbor);
-      if (visited[k]) continue;
+      const neighborKey = key(neighbor);
 
-      visited[k] = true;
-      cameFrom[k] = current;
+      if (visited.has(neighborKey)) {
+        continue;
+      }
+
+      visited.add(neighborKey);
+
+      cameFrom.set(neighborKey, current);
+
       queue.push(neighbor);
-      steps.push({ type: "frontier", node: neighbor });
+
+      steps.push({
+        type: "frontier",
+        node: neighbor,
+      });
     }
   }
 
+  // Reconstruct path
   const path: Node[] = [];
+
   const endKey = key(end);
-  const reachable =
-    cameFrom[endKey] || (start.x === end.x && start.y === end.y);
+
+  const reachable = visited.has(endKey);
 
   if (reachable) {
-    let cursor = end;
-    path.push(cursor);
-    while (cameFrom[key(cursor)]) {
-      cursor = cameFrom[key(cursor)];
-      path.push(cursor);
+    let current = end;
+
+    path.push(current);
+
+    while (cameFrom.has(key(current))) {
+      current = cameFrom.get(key(current))!;
+      path.push(current);
     }
+
     path.reverse();
   }
 
-  return { steps, path, found: path.length > 0 };
+  return {
+    steps,
+    path,
+    found: path.length > 0,
+  };
 }

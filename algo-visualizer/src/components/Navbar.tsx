@@ -37,7 +37,7 @@ export const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="top-0 z-50 bg-background dark:bg-dark-background backdrop-blur-none">
+    <nav className="top-0 select-none z-50 bg-background dark:bg-dark-background backdrop-blur-none">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-10">
         <Link
           to="/"

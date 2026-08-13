@@ -25,6 +25,7 @@ export interface PathfindingVisualizerInstance {
   stepForward: () => void;
   stepBackward: () => void;
   reset: () => void;
+  isPlaying: () => boolean;
   destroy?: () => void;
 }
 
@@ -55,7 +56,7 @@ export function createPathfindingVisualizer(
   const cellH = height / rows;
 
   const grid: Grid = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => (Math.random() < 0.2 ? 1 : 0)),
+    Array.from({ length: cols }, () => (Math.random() < 0.1 ? 1 : 0)),
   );
 
   const start: Node = {
@@ -89,6 +90,10 @@ export function createPathfindingVisualizer(
   let visitedCount = 0;
 
   let isPlaying = false;
+
+  function getIsPlaying() {
+    return isPlaying;
+  }
 
   function play() {
     isPlaying = true;
@@ -306,6 +311,7 @@ export function createPathfindingVisualizer(
     pause,
     stepForward,
     stepBackward,
+    isPlaying: getIsPlaying,
     reset,
   };
 }
