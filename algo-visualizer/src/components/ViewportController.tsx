@@ -1,22 +1,34 @@
-import { useState } from "react";
+interface ViewportControllerProps {
+  isPlaying: boolean;
+  onPlay: () => void;
+  onPause: () => void;
+  onNext: () => void;
+  onBack: () => void;
+}
 
-const ViewportController = () => {
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-  };
-
+const ViewportController = ({
+  isPlaying,
+  onPlay,
+  onPause,
+  onNext,
+  onBack,
+}: ViewportControllerProps) => {
   return (
     <div className="flex justify-around gap-4 -mt-2">
-      <a className="cursor-pointer">
+      <a className="cursor-pointer" onClick={onBack}>
         <BackIcon color="#4398c7" />
       </a>
-      <a className="cursor-pointer block" onClick={togglePlay}>
-        <PauseIcon color="#4398c7" hidden={!isPlaying ? "hidden" : ""} />
-        <PlayIcon color="#4398c7" hidden={isPlaying ? "hidden" : ""} />
+      <a
+        className="cursor-pointer block"
+        onClick={isPlaying ? onPause : onPlay}
+      >
+        {isPlaying ? (
+          <PauseIcon color="#4398c7" />
+        ) : (
+          <PlayIcon color="#4398c7" />
+        )}
       </a>
-      <a className="cursor-pointer">
+      <a className="cursor-pointer" onClick={onNext}>
         <NextIcon color="#4398c7" />
       </a>
     </div>

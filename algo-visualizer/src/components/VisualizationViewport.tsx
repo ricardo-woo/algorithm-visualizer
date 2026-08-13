@@ -1,21 +1,14 @@
 import ViewportController from "./ViewportController";
-import { useRef, useEffect } from "react";
-import type {
-  PathfindingVisualizerContext,
-  PathfindingVisualizerInstance,
-} from "../algorithms/pathfinding/PathfindingVisualizer";
+import { useRef, useEffect, useState } from "react";
+import { algorithms } from "../algorithms/pathfinding/PathfindingVisualizer";
+import { createPathfindingVisualizer } from "../algorithms/pathfinding/PathfindingVisualizer";
+import type { PathfindingVisualizerInstance } from "../algorithms/pathfinding/PathfindingVisualizer";
 
-interface VisualizationViewportProps {
-  createVisualizer: (
-    context: PathfindingVisualizerContext,
-  ) => PathfindingVisualizerInstance;
-}
-
-const VisualizationViewport = ({
-  createVisualizer,
-}: VisualizationViewportProps) => {
+const VisualizationViewport = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const visualizerRef = useRef<PathfindingVisualizerInstance>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -34,20 +27,28 @@ const VisualizationViewport = ({
       const width = rect.width;
       const height = rect.height;
 
-      canvas!.width = width;
-      canvas!.height = height;
+      canvas!.width = width * dpr;
+      canvas!.height = height * dpr;
       canvas!.style.width = `${width}px`;
       canvas!.style.height = `${height}px`;
       ctx!.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    const visualizer = createVisualizer({
-      ctx,
-      width: container.clientWidth,
-      height: container.clientHeight,
-      reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
-        .matches,
-    });
+    const visualizer = createPathfindingVisualizer(
+      {
+        ctx,
+        width: container.clientWidth,
+        height: container.clientHeight,
+        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)")
+          .matches,
+      },
+      {
+        algorithm: algorithms[0],
+        cellSize: 32,
+      },
+    );
+
+    visualizerRef.current = visualizer;
 
     const frame = (time: number) => {
       visualizer.frame(time);
@@ -65,8 +66,9 @@ const VisualizationViewport = ({
       cancelAnimationFrame(animationFrame);
       observer.disconnect();
       visualizer.destroy?.();
+      visualizerRef.current = null;
     };
-  }, [createVisualizer]);
+  }, []);
 
   return (
     <div className="rounded-2xl sm:col-span-3 w-full border border-white/5 bg-[#0a1120] p-4">
@@ -74,7 +76,23 @@ const VisualizationViewport = ({
         <span className="font-tech text-[0.68rem] uppercase tracking-wider text-[#90A1B9]">
           LIVE VIEW
         </span>
-        <ViewportController />
+        <ViewportController
+          isPlaying={isPlaying}
+          onPlay={() => {
+            visualizerRef.current?.play();
+            setIsPlaying(true);
+          }}
+          onPause={() => {
+            visualizerRef.current?.pause();
+            setIsPlaying(false);
+          }}
+          onNext={() => {
+            visualizerRef.current?.stepForward();
+          }}
+          onBack={() => {
+            visualizerRef.current?.stepBackward();
+          }}
+        />
       </div>
       <div
         ref={containerRef}

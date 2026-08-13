@@ -20,6 +20,11 @@ export interface PathfindingVisualizerContext {
 
 export interface PathfindingVisualizerInstance {
   frame: (time: number) => void;
+  play: () => void;
+  pause: () => void;
+  stepForward: () => void;
+  stepBackward: () => void;
+  reset: () => void;
   destroy?: () => void;
 }
 
@@ -32,10 +37,8 @@ export interface PathfindingAlgorithm {
 }
 
 export interface PathfindingVisualizerOptions {
-  grid: Grid;
-  start: Node;
-  end: Node;
-  result: SearchResult;
+  algorithm?: PathfindingAlgorithm;
+  cellSize?: number;
 }
 
 export function createPathfindingVisualizer(
@@ -43,24 +46,40 @@ export function createPathfindingVisualizer(
   options: PathfindingVisualizerOptions,
 ): PathfindingVisualizerInstance {
   const { ctx, width, height, reducedMotion } = context;
+  const cellSize = options.cellSize ?? 32;
 
-  const { grid, start, end, result } = options;
-
-  const rows = grid.length;
-  const cols = grid[0].length;
+  const cols = Math.floor(width / cellSize);
+  const rows = Math.floor(height / cellSize);
 
   const cellW = width / cols;
   const cellH = height / rows;
 
+  const grid: Grid = Array.from({ length: rows }, () =>
+    Array.from({ length: cols }, () => (Math.random() < 0.2 ? 1 : 0)),
+  );
+
+  const start: Node = {
+    x: 1,
+    y: Math.floor(rows / 2),
+  };
+
+  const end: Node = {
+    x: cols - 2,
+    y: Math.floor(rows / 2),
+  };
+
   const cells: string[][] = grid.map((row) =>
     row.map((value) => (value === 1 ? "wall" : "empty")),
   );
+  const algorithm = options.algorithm ?? algorithms[0];
+
+  const result = algorithm.run(grid, start, end);
 
   cells[start.y][start.x] = "start";
   cells[end.y][end.x] = "end";
+  let timelineIndex = 0;
 
-  let stepIndex = 0;
-  let pathIndex = 0;
+  const totalSteps = result.steps.length + result.path.length;
 
   let phase: PhaseType = "search";
 
@@ -68,6 +87,90 @@ export function createPathfindingVisualizer(
   let lastAdvance = 0;
 
   let visitedCount = 0;
+
+  let isPlaying = false;
+
+  function play() {
+    isPlaying = true;
+  }
+
+  function pause() {
+    isPlaying = false;
+  }
+
+  function rebuildTimeline(index: number) {
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        cells[y][x] = grid[y][x] === 1 ? "wall" : "empty";
+      }
+    }
+
+    cells[start.y][start.x] = "start";
+    cells[end.y][end.x] = "end";
+
+    const searchCount = Math.min(index, result.steps.length);
+
+    for (let i = 0; i < searchCount; i++) {
+      const step = result.steps[i];
+
+      if (step.node.x === start.x && step.node.y === start.y) {
+        continue;
+      }
+
+      if (step.node.x === end.x && step.node.y === end.y) {
+        continue;
+      }
+
+      cells[step.node.y][step.node.x] =
+        step.type === "visit" ? "visited" : "frontier";
+    }
+
+    const pathCount = Math.max(0, index - result.steps.length);
+
+    for (let i = 0; i < pathCount && i < result.path.length; i++) {
+      const node = result.path[i];
+
+      if (node.x === start.x && node.y === start.y) {
+        continue;
+      }
+
+      if (node.x === end.x && node.y === end.y) {
+        continue;
+      }
+
+      cells[node.y][node.x] = "path";
+    }
+
+    // Update animation state
+    if (index < result.steps.length) {
+      phase = "search";
+    } else if (index < result.steps.length + result.path.length) {
+      phase = "path";
+    } else {
+      phase = "pause";
+    }
+
+    phaseStart = 0;
+    lastAdvance = 0;
+  }
+
+  function stepForward() {
+    if (timelineIndex >= totalSteps) return;
+    pause();
+
+    timelineIndex++;
+
+    rebuildTimeline(timelineIndex);
+  }
+
+  function stepBackward() {
+    if (timelineIndex <= 0) return;
+    pause();
+
+    timelineIndex--;
+
+    rebuildTimeline(timelineIndex);
+  }
 
   function draw() {
     ctx.clearRect(0, 0, width, height);
@@ -99,51 +202,8 @@ export function createPathfindingVisualizer(
     }
   }
 
-  function applyStep() {
-    if (stepIndex >= result.steps.length) {
-      phase = "path";
-      return;
-    }
-
-    const step = result.steps[stepIndex];
-
-    const isStart = step.node.x === start.x && step.node.y === start.y;
-
-    const isEnd = step.node.x === end.x && step.node.y === end.y;
-
-    if (!isStart && !isEnd) {
-      cells[step.node.y][step.node.x] =
-        step.type === "visit" ? "visited" : "frontier";
-    }
-
-    if (step.type === "visit") {
-      visitedCount++;
-    }
-
-    stepIndex++;
-  }
-
-  function applyPathStep() {
-    if (pathIndex >= result.path.length) {
-      phase = "pause";
-      phaseStart = 0;
-      return;
-    }
-
-    const node = result.path[pathIndex];
-
-    const isStart = node.x === start.x && node.y === start.y;
-
-    const isEnd = node.x === end.x && node.y === end.y;
-
-    if (!isStart && !isEnd) {
-      cells[node.y][node.x] = "path";
-    }
-
-    pathIndex++;
-  }
-
   function reset() {
+    timelineIndex = 0;
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         cells[y][x] = grid[y][x] === 1 ? "wall" : "empty";
@@ -153,8 +213,6 @@ export function createPathfindingVisualizer(
     cells[start.y][start.x] = "start";
     cells[end.y][end.x] = "end";
 
-    stepIndex = 0;
-    pathIndex = 0;
     visitedCount = 0;
 
     phase = "search";
@@ -191,6 +249,15 @@ export function createPathfindingVisualizer(
     }
   }
 
+  function tick() {
+    if (timelineIndex >= totalSteps) {
+      phase = "pause";
+      return;
+    }
+    timelineIndex++;
+    rebuildTimeline(timelineIndex);
+  }
+
   reset();
 
   function frame(time: number) {
@@ -207,17 +274,22 @@ export function createPathfindingVisualizer(
       return;
     }
 
+    if (!isPlaying) {
+      draw();
+      return;
+    }
+
     if (phase === "search") {
       if (time - lastAdvance > 14) {
         lastAdvance = time;
 
-        applyStep();
+        tick();
       }
     } else if (phase === "path") {
       if (time - lastAdvance > 28) {
         lastAdvance = time;
 
-        applyPathStep();
+        tick();
       }
     } else if (phase === "pause") {
       if (time - phaseStart > 2600) {
@@ -230,6 +302,11 @@ export function createPathfindingVisualizer(
 
   return {
     frame,
+    play,
+    pause,
+    stepForward,
+    stepBackward,
+    reset,
   };
 }
 
