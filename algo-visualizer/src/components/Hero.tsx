@@ -16,7 +16,7 @@ export const Hero = () => {
           </p>
           <div className="flex gap-4">
             <Button bgcolor="bg-accent" display="Find Algorithms" />
-            <a href="/algorithm-visualizer/playground">
+            <a href="/playground">
               <Button
                 bgcolor="bg-secondary"
                 txtcolor="text-white"
