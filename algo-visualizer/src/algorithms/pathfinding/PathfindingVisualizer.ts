@@ -56,7 +56,7 @@ export function createPathfindingVisualizer(
   const cellH = height / rows;
 
   const grid: Grid = Array.from({ length: rows }, () =>
-    Array.from({ length: cols }, () => (Math.random() < 0.2 ? 1 : 0)),
+    Array.from({ length: cols }, () => (Math.random() < 0.1 ? 1 : 0)),
   );
 
   const start: Node = {
