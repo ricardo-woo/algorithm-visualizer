@@ -1,5 +1,6 @@
 import { Button } from "./Button";
 import { FeaturedViewport } from "./FeaturedViewport";
+import { Link } from "react-router-dom";
 
 export const Hero = () => {
   return (
@@ -16,13 +17,13 @@ export const Hero = () => {
           </p>
           <div className="flex gap-4">
             <Button bgcolor="bg-accent" display="Find Algorithms" />
-            <a href="/algorithm-visualizer/playground">
+            <Link to="/playground">
               <Button
                 bgcolor="bg-secondary"
                 txtcolor="text-white"
                 display="Try it out →"
               />
-            </a>
+            </Link>
           </div>
         </div>
         <div className="w-full lg:w-1/2">
