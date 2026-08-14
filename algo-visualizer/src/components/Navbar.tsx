@@ -25,7 +25,7 @@ const NavItem = ({ children, href, target }: NavItemProps) => {
 
 const NAV_ITEMS: NavItemProps[] = [
   { href: "/playground", children: "Playground" },
-  { href: "/docs", children: "Docs" },
+  { href: "/learn", children: "Learn" },
   {
     href: "https://github.com/ricardo-woo/algorithm-visualizer",
     children: "GitHub",

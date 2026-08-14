@@ -69,6 +69,9 @@ export function createPathfindingVisualizer(
     y: Math.floor(rows / 2),
   };
 
+  grid[start.y][start.x] = 0;
+  grid[end.y][end.x] = 0;
+
   const cells: string[][] = grid.map((row) =>
     row.map((value) => (value === 1 ? "wall" : "empty")),
   );
