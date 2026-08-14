@@ -11,7 +11,7 @@ const VisualizationViewport = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
 
-  const algorithm = algorithms[1];
+  const algorithm = algorithms[0];
 
   useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");

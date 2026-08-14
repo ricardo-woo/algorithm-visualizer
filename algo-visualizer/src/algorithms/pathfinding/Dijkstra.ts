@@ -1,18 +1,54 @@
-import type { Grid, Node, SearchResult, SearchStep } from "../types";
+import type { Grid, Node, SearchResult } from "../types";
 
-export function runDijkstra(
-  grid: Grid,
-  start: Node,
-  target: Node,
-): SearchResult {
-  const distances = new Map<string, number>();
-  const previous = new Map<string, Node | null>();
+export function runDijkstra(grid: Grid, start: Node, end: Node): SearchResult {
+  const rows = grid.length;
+  const cols = grid[0].length;
+
+  const key = (node: Node) => node.y * cols + node.x;
+
+  const neighborsOf = (node: Node): Node[] => {
+    const neighbors: Node[] = [];
+
+    if (node.x > 0) {
+      neighbors.push({
+        x: node.x - 1,
+        y: node.y,
+      });
+    }
+
+    if (node.x < cols - 1) {
+      neighbors.push({
+        x: node.x + 1,
+        y: node.y,
+      });
+    }
+
+    if (node.y > 0) {
+      neighbors.push({
+        x: node.x,
+        y: node.y - 1,
+      });
+    }
+
+    if (node.y < rows - 1) {
+      neighbors.push({
+        x: node.x,
+        y: node.y + 1,
+      });
+    }
+
+    return neighbors;
+  };
 
   const queue: { node: Node; distance: number }[] = [];
 
-  const steps: SearchStep[] = [];
+  const distances = new Map<number, number>();
+  const previous = new Map<number, Node | null>();
+  const visited = new Set<number>();
 
-  const startKey = getKey(start);
+  const steps: SearchResult["steps"] = [];
+
+  const startKey = key(start);
 
   distances.set(startKey, 0);
   previous.set(startKey, null);
@@ -22,13 +58,11 @@ export function runDijkstra(
     distance: 0,
   });
 
-  const visited = new Set<string>();
-
   while (queue.length > 0) {
     queue.sort((a, b) => a.distance - b.distance);
 
     const current = queue.shift()!;
-    const currentKey = getKey(current.node);
+    const currentKey = key(current.node);
 
     if (visited.has(currentKey)) {
       continue;
@@ -41,18 +75,21 @@ export function runDijkstra(
       node: current.node,
     });
 
-    if (current.node.x === target.x && current.node.y === target.y) {
+    if (current.node.x === end.x && current.node.y === end.y) {
       break;
     }
 
-    for (const neighbor of getNeighbors(current.node, grid)) {
-      const neighborKey = getKey(neighbor);
+    for (const neighbor of neighborsOf(current.node)) {
+      if (grid[neighbor.y][neighbor.x] === 1) {
+        continue;
+      }
+
+      const neighborKey = key(neighbor);
 
       if (visited.has(neighborKey)) {
         continue;
       }
 
-      // Every edge currently has a cost of 1.
       const weight = 1;
 
       const newDistance = current.distance + weight;
@@ -76,58 +113,24 @@ export function runDijkstra(
     }
   }
 
-  const targetKey = getKey(target);
+  const targetKey = key(end);
   const found = distances.has(targetKey);
 
-  return {
-    steps,
-    path: found ? reconstructPath(target, previous) : [],
-    found,
-  };
-}
+  const path: Node[] = [];
 
-function getKey(node: Node): string {
-  return `${node.x},${node.y}`;
-}
+  if (found) {
+    let current: Node | null = end;
 
-function getNeighbors(node: Node, grid: Grid): Node[] {
-  const neighbors: Node[] = [];
+    while (current !== null) {
+      path.unshift(current);
 
-  const directions = [
-    { x: 0, y: -1 },
-    { x: 0, y: 1 },
-    { x: -1, y: 0 },
-    { x: 1, y: 0 },
-  ];
-
-  for (const direction of directions) {
-    const x = node.x + direction.x;
-    const y = node.y + direction.y;
-
-    if (y >= 0 && y < grid.length && x >= 0 && x < grid[y].length) {
-      // Assuming 0 = walkable and 1 = wall.
-      if (grid[y][x] === 0) {
-        neighbors.push({ x, y });
-      }
+      current = previous.get(key(current)) ?? null;
     }
   }
 
-  return neighbors;
-}
-
-function reconstructPath(
-  target: Node,
-  previous: Map<string, Node | null>,
-): Node[] {
-  const path: Node[] = [];
-
-  let current: Node | null = target;
-
-  while (current !== null) {
-    path.unshift(current);
-
-    current = previous.get(getKey(current)) ?? null;
-  }
-
-  return path;
+  return {
+    steps,
+    path,
+    found,
+  };
 }
