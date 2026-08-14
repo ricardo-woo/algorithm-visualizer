@@ -7,7 +7,7 @@ import { Navbar } from "./components/Navbar";
 function App() {
   return (
     <>
-      <HashRouter basename="/algorithm-visualizer/">
+      <HashRouter>
         <div className="bg-background dark:bg-dark-background">
           <Navbar />
           <Routes>
