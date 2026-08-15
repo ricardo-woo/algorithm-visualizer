@@ -16,7 +16,10 @@ export const Hero = () => {
             deeper understanding of how they solve problems.
           </p>
           <div className="flex gap-4">
-            <Button bgcolor="bg-accent" display="Find Algorithms" />
+            <Link to="/learn">
+              <Button bgcolor="bg-accent" display="Find Algorithms" />
+            </Link>
+
             <Link to="/playground">
               <Button
                 bgcolor="bg-secondary"
