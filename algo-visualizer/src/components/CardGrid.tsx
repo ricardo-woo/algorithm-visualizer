@@ -28,6 +28,13 @@ const defaultAlgorithms: Algorithm[] = [
       "BFS explores nodes level by level to find the shortest path in an unweighted graph.",
     worstCase: "O(V + E)",
   },
+  {
+    id: "dijkstra",
+    title: "DIJKSTRA",
+    description:
+      "Dijkstra's algorithm finds the shortest path by always exploring the node with the smallest known distance from the start.",
+    worstCase: "O(E log V)",
+  },
 ];
 
 const CardItem = ({ title, description, worstCase }: CardItemProps) => {
