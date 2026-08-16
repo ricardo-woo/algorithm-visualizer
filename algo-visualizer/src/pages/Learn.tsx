@@ -1,5 +1,11 @@
+import LearnBar from "../components/LearnBar";
+
 const Learn = () => {
-  return <div>Learn</div>;
+  return (
+    <div>
+      <LearnBar />
+    </div>
+  );
 };
 
 export default Learn;
